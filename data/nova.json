@@ -1,0 +1,39 @@
+{
+  "companyName": "Nova Analytics",
+  "slug": "nova",
+  "logo": "",
+  "website": "https://novaanalytics.example.io",
+  "entries": [
+    {
+      "version": "2.0.0",
+      "date": "2025-05-01",
+      "title": "Motor de procesamiento v2",
+      "changes": [
+        "**Reescritura completa** del pipeline de ingesta de datos: 3× más rápido.",
+        "Soporte para fuentes de datos en *streaming* (Kafka, Kinesis).",
+        "Nueva API REST v2 con paginación basada en cursores.",
+        "Webhooks configurables para alertas en tiempo real."
+      ]
+    },
+    {
+      "version": "1.8.3",
+      "date": "2025-04-10",
+      "title": "Mejoras de rendimiento",
+      "changes": [
+        "Optimización de consultas SQL que reduce el tiempo de carga un 30 %.",
+        "Caché de resultados con TTL configurable por dashboard.",
+        "Corrección de memory leak en el worker de exportaciones."
+      ]
+    },
+    {
+      "version": "1.8.0",
+      "date": "2025-03-01",
+      "title": "Integración con Google Sheets y Notion",
+      "changes": [
+        "Exportación directa a Google Sheets con sincronización bidireccional.",
+        "Bloques de datos para Notion: inserta métricas en cualquier página.",
+        "Mejora del flujo de autenticación OAuth 2.0."
+      ]
+    }
+  ]
+}

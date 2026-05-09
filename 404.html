@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirigiendo…</title>
+  <!--
+    =============================================
+    404.html — Truco SPA para GitHub Pages
+    =============================================
+    GitHub Pages devuelve este archivo cuando una
+    ruta como /empresa/ no existe como fichero real.
+    Este script guarda la ruta en sessionStorage y
+    redirige a index.html, que la recupera y la
+    procesa como ruta de la SPA.
+
+    Basado en la técnica de Rafael Pedicini:
+    https://github.com/rafgraph/spa-github-pages
+    =============================================
+  -->
+  <script>
+    (function () {
+      // Guarda la ruta completa (path + query + hash) en sessionStorage
+      var path = window.location.pathname +
+                 window.location.search  +
+                 window.location.hash;
+
+      // Solo guardamos si no es la raíz, para evitar bucles
+      if (path !== '/' && path !== '/index.html') {
+        sessionStorage.setItem('spa-redirect', path);
+      }
+
+      // Redirige a la raíz del sitio
+      window.location.replace(
+        window.location.origin + '/'
+      );
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=/" />
+    <p>Redirigiendo… <a href="/">Haz clic aquí si no ocurre automáticamente.</a></p>
+  </noscript>
+</head>
+<body>
+  <!-- Esta página nunca se ve; solo ejecuta el redirect -->
+</body>
+</html>

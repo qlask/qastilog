@@ -1,0 +1,51 @@
+{
+  "companyName": "Acme Corp",
+  "slug": "acme",
+  "logo": "",
+  "website": "https://acmecorp.example.com",
+  "entries": [
+    {
+      "version": "3.1.0",
+      "date": "2025-04-18",
+      "title": "Panel de analíticas renovado",
+      "changes": [
+        "**Nuevo** panel de métricas en tiempo real con gráficas interactivas.",
+        "Exportación de reportes en formato CSV y PDF.",
+        "Filtros avanzados por rango de fechas y segmentos de usuarios.",
+        "Corrección de un fallo que causaba datos duplicados en ciertas zonas horarias."
+      ]
+    },
+    {
+      "version": "3.0.2",
+      "date": "2025-03-30",
+      "title": "Parche de seguridad",
+      "changes": [
+        "Actualización de dependencias con vulnerabilidades CVE-2025-1234.",
+        "Mejora en la validación de tokens de sesión.",
+        "Reducción del tiempo de respuesta de la API en un 18 %."
+      ]
+    },
+    {
+      "version": "3.0.0",
+      "date": "2025-02-14",
+      "title": "Rediseño completo de la interfaz",
+      "changes": [
+        "Nuevo sistema de diseño basado en componentes reutilizables.",
+        "Soporte para modo oscuro siguiendo las preferencias del sistema.",
+        "Accesibilidad mejorada: cumplimiento WCAG 2.1 AA.",
+        "Migración de `React 17` a `React 19`.",
+        "Eliminadas dependencias obsoletas que aumentaban el bundle en 40 KB."
+      ]
+    },
+    {
+      "version": "2.5.1",
+      "date": "2025-01-05",
+      "title": "Correcciones menores",
+      "changes": [
+        "Arreglado el scroll infinito en la lista de proyectos.",
+        "Tooltips visibles correctamente en pantallas táctiles.",
+        "Texto de error de formulario ahora es más descriptivo."
+      ]
+    }
+  ]
+}

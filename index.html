@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelogs</title>
+  <meta name="description" content="Plataforma de changelogs para empresas y aplicaciones." />
+
+  <!-- Favicon SVG inline -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f0f0f'/><text x='6' y='23' font-size='20' font-family='monospace'>∆</text></svg>" />
+
+  <!-- Fuentes: Playfair Display (display) + IBM Plex Mono (code/meta) + Source Serif 4 (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       VARIABLES Y TEMA
+       ============================================= */
+    :root {
+      --bg:          #faf9f7;
+      --bg-card:     #ffffff;
+      --bg-hover:    #f3f0eb;
+      --text:        #1a1816;
+      --text-muted:  #7a7469;
+      --text-subtle: #b0a89e;
+      --accent:      #c8442a;
+      --accent-soft: #f0e8e5;
+      --border:      #e2ddd8;
+      --border-strong: #c8c0b8;
+      --timeline:    #d4cfc9;
+      --tag-bg:      #f0ede9;
+      --shadow:      0 1px 3px rgba(26,24,22,0.06), 0 4px 16px rgba(26,24,22,0.04);
+      --shadow-hover: 0 2px 8px rgba(26,24,22,0.10), 0 8px 32px rgba(26,24,22,0.08);
+      --radius:      6px;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Source Serif 4', Georgia, serif;
+      --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+      --max-w:        780px;
+      --transition:   0.18s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:          #111009;
+        --bg-card:     #1a1816;
+        --bg-hover:    #222018;
+        --text:        #ede8e2;
+        --text-muted:  #8a8278;
+        --text-subtle: #5a5450;
+        --accent:      #e05a3e;
+        --accent-soft: #2a1a16;
+        --border:      #2e2b27;
+        --border-strong: #3e3a35;
+        --timeline:    #2e2b27;
+        --tag-bg:      #222018;
+        --shadow:      0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
+        --shadow-hover: 0 2px 8px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3);
+      }
+    }
+
+    /* =============================================
+       RESET Y BASE
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =============================================
+       HEADER / NAV
+       ============================================= */
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+      /* Frosted glass en navegadores modernos */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+    }
+
+    .header-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .site-logo {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .site-logo .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      background: var(--text);
+      color: var(--bg);
+      border-radius: 5px;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .header-back {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color var(--transition);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .header-back:hover { color: var(--text); }
+    .header-back svg { transition: transform var(--transition); }
+    .header-back:hover svg { transform: translateX(-3px); }
+
+    /* =============================================
+       LAYOUT PRINCIPAL
+       ============================================= */
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* =============================================
+       PÁGINA HOME
+       ============================================= */
+    #view-home { display: none; }
+    #view-home.active { display: block; }
+
+    .home-hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .home-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .home-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .home-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      font-weight: 300;
+      font-style: italic;
+      max-width: 480px;
+    }
+
+    .companies-section {
+      padding: 48px 0;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-bottom: 24px;
+    }
+
+    /* Grilla de empresa-tarjetas */
+    .companies-grid {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .company-card {
+      background: var(--bg-card);
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      transition: background var(--transition);
+      text-decoration: none;
+    }
+
+    .company-card:hover { background: var(--bg-hover); }
+
+    .company-card-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .company-logo-thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .company-logo-placeholder {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .company-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .company-slug {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-subtle);
+      margin-top: 1px;
+    }
+
+    .company-card-arrow {
+      color: var(--text-subtle);
+      flex-shrink: 0;
+      transition: transform var(--transition), color var(--transition);
+    }
+
+    .company-card:hover .company-card-arrow {
+      transform: translateX(4px);
+      color: var(--text-muted);
+    }
+
+    /* Estado vacío */
+    .empty-state {
+      text-align: center;
+      padding: 64px 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-state p { font-style: italic; margin-bottom: 8px; }
+    .empty-state code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    /* =============================================
+       PÁGINA EMPRESA / CHANGELOG
+       ============================================= */
+    #view-company { display: none; }
+    #view-company.active { display: block; }
+
+    .company-header {
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .company-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .company-logo-large {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+    }
+
+    .company-logo-large-placeholder {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .company-title-block {}
+
+    .company-page-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .company-website-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      transition: color var(--transition);
+    }
+
+    .company-website-link:hover { color: var(--accent); }
+
+    /* =============================================
+       TIMELINE DE ENTRADAS
+       ============================================= */
+    .changelog-timeline {
+      padding: 48px 0 80px;
+      position: relative;
+    }
+
+    /* Línea vertical izquierda */
+    .changelog-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 64px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--timeline), transparent);
+    }
+
+    .changelog-entry {
+      position: relative;
+      padding-left: 32px;
+      padding-bottom: 48px;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: entry-in 0.4s ease forwards;
+    }
+
+    /* Escalonar animación por cada entrada */
+    .changelog-entry:nth-child(1)  { animation-delay: 0.05s; }
+    .changelog-entry:nth-child(2)  { animation-delay: 0.10s; }
+    .changelog-entry:nth-child(3)  { animation-delay: 0.15s; }
+    .changelog-entry:nth-child(4)  { animation-delay: 0.20s; }
+    .changelog-entry:nth-child(5)  { animation-delay: 0.25s; }
+    .changelog-entry:nth-child(6)  { animation-delay: 0.30s; }
+    .changelog-entry:nth-child(7)  { animation-delay: 0.35s; }
+    .changelog-entry:nth-child(8)  { animation-delay: 0.40s; }
+    .changelog-entry:nth-child(n+9){ animation-delay: 0.45s; }
+
+    @keyframes entry-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Punto en la línea de tiempo */
+    .changelog-entry::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 8px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      border: 2px solid var(--bg);
+      transition: background var(--transition);
+    }
+
+    /* El punto de la primera entrada (más reciente) es de color acento */
+    .changelog-entry:first-child::before {
+      background: var(--accent);
+      width: 11px;
+      height: 11px;
+      left: -5px;
+    }
+
+    .entry-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .entry-version {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 8px;
+      border-radius: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    .entry-date {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-subtle);
+      letter-spacing: 0.04em;
+    }
+
+    .entry-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .entry-changes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .entry-changes li {
+      font-size: 15px;
+      color: var(--text-muted);
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    /* Guión tipográfico como bullet */
+    .entry-changes li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-subtle);
+      font-family: var(--font-mono);
+    }
+
+    /* =============================================
+       VISTA DE ERROR
+       ============================================= */
+    #view-error { display: none; }
+    #view-error.active { display: block; }
+
+    .error-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .error-code {
+      font-family: var(--font-mono);
+      font-size: 72px;
+      font-weight: 500;
+      color: var(--border-strong);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .error-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .error-message {
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 32px;
+      font-size: 16px;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .btn-home:hover {
+      background: var(--bg-hover);
+      border-color: var(--text-muted);
+    }
+
+    /* =============================================
+       ESTADO DE CARGA
+       ============================================= */
+    #view-loading { display: none; }
+    #view-loading.active { display: block; }
+
+    .loading-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--text-muted);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-subtle);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .site-footer p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-subtle);
+      letter-spacing: 0.06em;
+    }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 600px) {
+      main { padding: 0 16px; }
+      .site-header { padding: 0 16px; }
+      .home-hero { padding: 48px 0 40px; }
+      .company-header { padding: 40px 0 32px; }
+      .company-meta-row { flex-direction: column; align-items: flex-start; }
+      .changelog-timeline::before { display: none; }
+      .changelog-entry { padding-left: 0; }
+      .changelog-entry::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CABECERA GLOBAL -->
+  <header class="site-header">
+    <div class="header-inner">
+      <!-- Logo: siempre visible, lleva a la home -->
+      <a href="/" class="site-logo" id="logo-link" aria-label="Inicio">
+        <span class="logo-mark">∆</span>
+        Changelogs
+      </a>
+
+      <!-- Botón "Volver" visible solo en vista de empresa -->
+      <button class="header-back" id="btn-back" style="display:none" aria-label="Volver al inicio">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8.5 2.5L4 7l4.5 4.5"/>
+        </svg>
+        Todas las empresas
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL (SPA) -->
+  <main>
+
+    <!-- ── VISTA: CARGANDO ── -->
+    <div id="view-loading" role="status" aria-live="polite">
+      <div class="loading-section">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Cargando…</p>
+      </div>
+    </div>
+
+    <!-- ── VISTA: HOME ── -->
+    <div id="view-home" aria-label="Directorio de empresas">
+      <section class="home-hero">
+        <p class="home-eyebrow">Changelog Platform</p>
+        <h1 class="home-title">Registro de cambios</h1>
+        <p class="home-subtitle">Historial de versiones y actualizaciones para cada producto.</p>
+      </section>
+
+      <section class="companies-section">
+        <p class="section-label">Empresas disponibles</p>
+        <!-- Renderizado dinámico por JS -->
+        <div class="companies-grid" id="companies-grid">
+          <!-- Las tarjetas se insertan aquí -->
+        </div>
+      </section>
+    </div>
+
+    <!-- ── VISTA: EMPRESA ── -->
+    <div id="view-company">
+      <header class="company-header">
+        <div class="company-meta-row">
+          <!-- Logo o placeholder; se rellena por JS -->
+          <div id="company-logo-wrapper"></div>
+          <div class="company-title-block">
+            <h1 class="company-page-title" id="company-page-title">—</h1>
+            <a id="company-website-link" class="company-website-link" href="#" target="_blank" rel="noopener" style="display:none">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 1h4v4M11 1 5.5 6.5M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V8"/>
+              </svg>
+              <span id="company-website-text"></span>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Entradas de changelog -->
+      <div class="changelog-timeline" id="changelog-timeline">
+        <!-- Se rellena dinámicamente -->
+      </div>
+    </div>
+
+    <!-- ── VISTA: ERROR ── -->
+    <div id="view-error">
+      <section class="error-section">
+        <p class="error-code">404</p>
+        <h2 class="error-title" id="error-title">Empresa no encontrada</h2>
+        <p class="error-message" id="error-message">No existe un changelog para esta ruta.</p>
+        <a href="/" class="btn-home" id="error-home-link">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8.5 2.5L4 7l4.5 4.5"/>
+          </svg>
+          Volver al inicio
+        </a>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="site-footer">
+    <p>Changelog Platform · Actualizado con cada nueva versión</p>
+  </footer>
+
+  <!-- =============================================
+       LÓGICA DE LA SPA
+       ============================================= -->
+  <script>
+    /**
+     * =============================================
+     * CONFIGURACIÓN CENTRAL
+     * Para añadir una empresa:
+     *   1. Crea data/slug.json con la estructura indicada.
+     *   2. Añade una entrada a este array con el mismo slug.
+     * =============================================
+     */
+    const COMPANIES = [
+      // Ejemplo con datos de demostración
+      { name: 'Acme Corp',       slug: 'acme',       logo: '' },
+      { name: 'Nova Analytics',  slug: 'nova',       logo: '' },
+      { name: 'Pixel Studio',    slug: 'pixel',      logo: '' },
+    ];
+
+    /**
+     * =============================================
+     * UTILIDADES
+     * ============================================= */
+
+    /** Muestra solo la vista solicitada y oculta las demás. */
+    function showView(id) {
+      ['view-home', 'view-company', 'view-error', 'view-loading'].forEach(v => {
+        const el = document.getElementById(v);
+        el.classList.toggle('active', v === id);
+      });
+    }
+
+    /** Actualiza el título de la pestaña del navegador. */
+    function setPageTitle(title) {
+      document.title = title ? `${title} · Changelogs` : 'Changelogs';
+    }
+
+    /**
+     * Formatea una fecha ISO (YYYY-MM-DD) a texto legible en español.
+     * Ejemplo: "2025-03-10" → "10 mar 2025"
+     */
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const date = new Date(y, m - 1, d);
+      return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    /**
+     * Escapa HTML básico para evitar XSS al renderizar texto de datos externos.
+     */
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    /**
+     * Convierte texto plano con **negrita**, *cursiva* y `código` en HTML básico.
+     * No es un parser Markdown completo, pero cubre los casos más comunes.
+     */
+    function simpleMarkdown(text) {
+      return escapeHtml(text)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g,     '<em>$1</em>')
+        .replace(/`(.+?)`/g,       '<code>$1</code>');
+    }
+
+    /**
+     * Obtiene la primera(s) letra(s) de un nombre para el placeholder de logo.
+     */
+    function initials(name) {
+      return name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    }
+
+    /**
+     * =============================================
+     * ROUTER — detecta la ruta y carga la vista
+     * ============================================= */
+    function router() {
+      // Recuperar ruta guardada por 404.html (redirect de GitHub Pages SPA)
+      const redirectPath = sessionStorage.getItem('spa-redirect');
+      if (redirectPath) {
+        sessionStorage.removeItem('spa-redirect');
+        window.history.replaceState(null, '', redirectPath);
+      }
+
+      const path = window.location.pathname.replace(/\/$/, '') || '/';
+
+      if (path === '' || path === '/') {
+        renderHome();
+      } else {
+        // Extrae el segmento de slug: /empresa → empresa
+        const slug = path.split('/').filter(Boolean)[0];
+        if (slug) {
+          renderCompany(slug);
+        } else {
+          renderError('Ruta inválida', 'La URL no corresponde a ninguna empresa.');
+        }
+      }
+    }
+
+    /**
+     * =============================================
+     * VISTA HOME
+     * ============================================= */
+    function renderHome() {
+      showView('view-home');
+      setPageTitle(null);
+      document.getElementById('btn-back').style.display = 'none';
+
+      const grid = document.getElementById('companies-grid');
+      grid.innerHTML = '';
+
+      if (!COMPANIES.length) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <p>Aún no hay empresas registradas.</p>
+            <p>Añade entradas al array <code>COMPANIES</code> en <code>index.html</code>
+               y crea los archivos <code>data/slug.json</code>.</p>
+          </div>`;
+        return;
+      }
+
+      COMPANIES.forEach(company => {
+        const card = document.createElement('a');
+        card.className = 'company-card';
+        // Usamos href real para SEO y accesibilidad; el click navega via JS
+        card.href = `/${company.slug}/`;
+        card.setAttribute('aria-label', `Ver changelog de ${company.name}`);
+
+        // Miniatura de logo o placeholder con iniciales
+        const logoHTML = company.logo
+          ? `<img class="company-logo-thumb" src="${escapeHtml(company.logo)}" alt="${escapeHtml(company.name)} logo" loading="lazy" />`
+          : `<div class="company-logo-placeholder">${escapeHtml(initials(company.name))}</div>`;
+
+        card.innerHTML = `
+          <div class="company-card-left">
+            ${logoHTML}
+            <div>
+              <div class="company-name">${escapeHtml(company.name)}</div>
+              <div class="company-slug">/${escapeHtml(company.slug)}/</div>
+            </div>
+          </div>
+          <svg class="company-card-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"
+               stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5.5 3.5L10 8l-4.5 4.5"/>
+          </svg>`;
+
+        // Navegación SPA: evita recarga completa
+        card.addEventListener('click', e => {
+          e.preventDefault();
+          window.history.pushState({}, '', `/${company.slug}/`);
+          renderCompany(company.slug);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    /**
+     * =============================================
+     * VISTA EMPRESA
+     * ============================================= */
+    async function renderCompany(slug) {
+      showView('view-loading');
+
+      // Buscar empresa en el listado
+      const company = COMPANIES.find(c => c.slug === slug);
+
+      if (!company) {
+        renderError(
+          `"${slug}" no encontrada`,
+          'Este slug no está registrado en el directorio. Verifica la URL.'
+        );
+        return;
+      }
+
+      try {
+        // Carga el JSON de la empresa
+        const res = await fetch(`/data/${slug}.json`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        displayCompany(data);
+      } catch (err) {
+        renderError(
+          `No se pudo cargar "${company.name}"`,
+          `El archivo data/${slug}.json no existe o contiene errores. (${err.message})`
+        );
+      }
+    }
+
+    /** Renderiza los datos de una empresa en la vista de changelog. */
+    function displayCompany(data) {
+      showView('view-company');
+      setPageTitle(data.companyName || data.slug);
+      document.getElementById('btn-back').style.display = 'flex';
+
+      // Logo o placeholder
+      const logoWrapper = document.getElementById('company-logo-wrapper');
+      if (data.logo) {
+        logoWrapper.innerHTML = `<img class="company-logo-large" src="${escapeHtml(data.logo)}" alt="${escapeHtml(data.companyName)} logo" />`;
+      } else {
+        logoWrapper.innerHTML = `<div class="company-logo-large-placeholder">${escapeHtml(initials(data.companyName || data.slug))}</div>`;
+      }
+
+      // Título
+      document.getElementById('company-page-title').textContent = data.companyName || data.slug;
+
+      // Enlace al sitio web
+      const websiteLink = document.getElementById('company-website-link');
+      if (data.website) {
+        websiteLink.href = data.website;
+        document.getElementById('company-website-text').textContent =
+          data.website.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        websiteLink.style.display = 'inline-flex';
+      } else {
+        websiteLink.style.display = 'none';
+      }
+
+      // Entradas del changelog (ordenadas por fecha descendente)
+      const timeline = document.getElementById('changelog-timeline');
+      timeline.innerHTML = '';
+
+      const entries = [...(data.entries || [])].sort((a, b) =>
+        new Date(b.date) - new Date(a.date)
+      );
+
+      if (!entries.length) {
+        timeline.innerHTML = `<div class="empty-state"><p>No hay entradas de changelog todavía.</p></div>`;
+        return;
+      }
+
+      entries.forEach(entry => {
+        const article = document.createElement('article');
+        article.className = 'changelog-entry';
+
+        // Lista de cambios con soporte de markdown ligero
+        const changesHTML = (entry.changes || [])
+          .map(c => `<li>${simpleMarkdown(c)}</li>`)
+          .join('');
+
+        article.innerHTML = `
+          <div class="entry-meta">
+            ${entry.version ? `<span class="entry-version">v${escapeHtml(String(entry.version))}</span>` : ''}
+            ${entry.date    ? `<time class="entry-date" datetime="${escapeHtml(entry.date)}">${formatDate(entry.date)}</time>` : ''}
+          </div>
+          ${entry.title ? `<h2 class="entry-title">${escapeHtml(entry.title)}</h2>` : ''}
+          <ul class="entry-changes">${changesHTML}</ul>`;
+
+        timeline.appendChild(article);
+      });
+
+      // Scroll al tope suavemente
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /**
+     * =============================================
+     * VISTA ERROR
+     * ============================================= */
+    function renderError(title, message) {
+      showView('view-error');
+      setPageTitle('No encontrado');
+      document.getElementById('btn-back').style.display = 'none';
+      document.getElementById('error-title').textContent = title;
+      document.getElementById('error-message').textContent = message;
+
+      // El enlace "Volver al inicio" navega via SPA
+      const homeLink = document.getElementById('error-home-link');
+      homeLink.onclick = e => {
+        e.preventDefault();
+        window.history.pushState({}, '', '/');
+        renderHome();
+      };
+    }
+
+    /**
+     * =============================================
+     * NAVEGACIÓN HACIA ATRÁS (botón y botón Back del navegador)
+     * ============================================= */
+    document.getElementById('btn-back').addEventListener('click', () => {
+      window.history.pushState({}, '', '/');
+      renderHome();
+    });
+
+    document.getElementById('logo-link').addEventListener('click', e => {
+      e.preventDefault();
+      window.history.pushState({}, '', '/');
+      renderHome();
+    });
+
+    // Popstate: manejar botón Atrás/Adelante del navegador
+    window.addEventListener('popstate', router);
+
+    // Arrancar la SPA
+    router();
+  </script>
+
+</body>
+</html>
