@@ -874,52 +874,103 @@
       });
     }
 
-/**
- * =============================================
- * VISTA EMPRESA
- * ============================================= */
+    /**
+     * =============================================
+     * VISTA EMPRESA
+     * ============================================= */
+    async function renderCompany(slug) {
+      showView('view-loading');
 
-/** Calcula la ruta base para que funcione en local y en GitHub Pages */
-function getBasePath() {
-  const path = window.location.pathname;
-  // Si estás en GitHub Pages (username.github.io/repo/)
-  if (location.hostname.includes('github.io')) {
-    const parts = path.split('/').filter(p => p);
-    return parts.length > 0 ? `/${parts[0]}/` : '/';
-  }
-  // En local u otro hosting
-  return path.endsWith('/') ? path : path.substring(0, path.lastIndexOf('/') + 1);
-}
+      // Buscar empresa en el listado
+      const company = COMPANIES.find(c => c.slug === slug);
 
-async function renderCompany(slug) {
-  showView('view-loading');
+      if (!company) {
+        renderError(
+          `"${slug}" no encontrada`,
+          'Este slug no está registrado en el directorio. Verifica la URL.'
+        );
+        return;
+      }
 
-  // Buscar empresa en el listado
-  const company = COMPANIES.find(c => c.slug === slug);
+      try {
+        // Carga el JSON de la empresa
+        const res = await fetch(`/data/${slug}.json`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        displayCompany(data);
+      } catch (err) {
+        renderError(
+          `No se pudo cargar "${company.name}"`,
+          `El archivo data/${slug}.json no existe o contiene errores. (${err.message})`
+        );
+      }
+    }
 
-  if (!company) {
-    renderError(
-      `"${slug}" no encontrada`,
-      'Este slug no está registrado en el directorio. Verifica la URL.'
-    );
-    return;
-  }
+    /** Renderiza los datos de una empresa en la vista de changelog. */
+    function displayCompany(data) {
+      showView('view-company');
+      setPageTitle(data.companyName || data.slug);
+      document.getElementById('btn-back').style.display = 'flex';
 
-  try {
-    // ✅ RUTA CORREGIDA: usa basePath dinámico
-    const basePath = getBasePath();
-    const res = await fetch(`${basePath}data/${slug}.json`);
-    
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    displayCompany(data);
-  } catch (err) {
-    renderError(
-      `No se pudo cargar "${company.name}"`,
-      `El archivo data/${slug}.json no existe o contiene errores. (${err.message})`
-    );
-  }
-}
+      // Logo o placeholder
+      const logoWrapper = document.getElementById('company-logo-wrapper');
+      if (data.logo) {
+        logoWrapper.innerHTML = `<img class="company-logo-large" src="${escapeHtml(data.logo)}" alt="${escapeHtml(data.companyName)} logo" />`;
+      } else {
+        logoWrapper.innerHTML = `<div class="company-logo-large-placeholder">${escapeHtml(initials(data.companyName || data.slug))}</div>`;
+      }
+
+      // Título
+      document.getElementById('company-page-title').textContent = data.companyName || data.slug;
+
+      // Enlace al sitio web
+      const websiteLink = document.getElementById('company-website-link');
+      if (data.website) {
+        websiteLink.href = data.website;
+        document.getElementById('company-website-text').textContent =
+          data.website.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        websiteLink.style.display = 'inline-flex';
+      } else {
+        websiteLink.style.display = 'none';
+      }
+
+      // Entradas del changelog (ordenadas por fecha descendente)
+      const timeline = document.getElementById('changelog-timeline');
+      timeline.innerHTML = '';
+
+      const entries = [...(data.entries || [])].sort((a, b) =>
+        new Date(b.date) - new Date(a.date)
+      );
+
+      if (!entries.length) {
+        timeline.innerHTML = `<div class="empty-state"><p>No hay entradas de changelog todavía.</p></div>`;
+        return;
+      }
+
+      entries.forEach(entry => {
+        const article = document.createElement('article');
+        article.className = 'changelog-entry';
+
+        // Lista de cambios con soporte de markdown ligero
+        const changesHTML = (entry.changes || [])
+          .map(c => `<li>${simpleMarkdown(c)}</li>`)
+          .join('');
+
+        article.innerHTML = `
+          <div class="entry-meta">
+            ${entry.version ? `<span class="entry-version">v${escapeHtml(String(entry.version))}</span>` : ''}
+            ${entry.date    ? `<time class="entry-date" datetime="${escapeHtml(entry.date)}">${formatDate(entry.date)}</time>` : ''}
+          </div>
+          ${entry.title ? `<h2 class="entry-title">${escapeHtml(entry.title)}</h2>` : ''}
+          <ul class="entry-changes">${changesHTML}</ul>`;
+
+        timeline.appendChild(article);
+      });
+
+      // Scroll al tope suavemente
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     /**
      * =============================================
      * VISTA ERROR
