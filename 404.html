@@ -19,21 +19,14 @@
   -->
   <script>
     (function () {
-      // Guarda la ruta completa (path + query + hash) en sessionStorage
-      var path = window.location.pathname +
-                 window.location.search  +
-                 window.location.hash;
-
-      // Solo guardamos si no es la raíz, para evitar bucles
-      if (path !== '/' && path !== '/index.html') {
-        sessionStorage.setItem('spa-redirect', path);
+      var fullPath = window.location.pathname + window.location.search + window.location.hash;
+      // Solo guardamos si no es la raíz del proyecto
+      if (fullPath !== '/qastilog/' && fullPath !== '/qastilog/index.html') {
+        sessionStorage.setItem('spa-redirect', fullPath);
       }
-
-      // Redirige a la raíz del sitio
-      window.location.replace(
-        window.location.origin + '/'
-      );
+      window.location.replace(window.location.origin + '/qastilog/');
     })();
+        })();
   </script>
   <noscript>
     <meta http-equiv="refresh" content="0; url=/" />
