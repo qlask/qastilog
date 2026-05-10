@@ -1,6 +1,6 @@
 # ∆ Qastilog
 
-# Este es un proyecto para que los creadores de proyectos app o web puedan tener transparencia colectiva con sus usuarios.. Actualmente solo contamos con changelog, aunque se vienen nuevas actualizaciones.
+# Este es un proyecto para que los creadores de proyectos app o web puedan tener transparencia colectiva con sus usuarios... ## Actualmente solo contamos con changelog, aunque se vienen nuevas actualizaciones.
 
 ---
 
