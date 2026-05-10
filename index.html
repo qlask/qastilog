@@ -894,7 +894,7 @@
 
       try {
         // Carga el JSON de la empresa
-        const res = await fetch(`data/${slug}.json`);
+        const res = await fetch(`/data/${slug}.json`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         displayCompany(data);
