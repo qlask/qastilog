@@ -726,6 +726,8 @@
      *   2. Añade una entrada a este array con el mismo slug.
      * =============================================
      */
+    const BASE_PATH = '/qastilog';   // sin barra final
+    
     const COMPANIES = [
       // Ejemplo con datos de demostración
       { name: 'Acme Corp',       slug: 'acme',       logo: '' },
@@ -794,27 +796,29 @@
      * ROUTER — detecta la ruta y carga la vista
      * ============================================= */
     function router() {
-      // Recuperar ruta guardada por 404.html (redirect de GitHub Pages SPA)
-      const redirectPath = sessionStorage.getItem('spa-redirect');
-      if (redirectPath) {
-        sessionStorage.removeItem('spa-redirect');
-        window.history.replaceState(null, '', redirectPath);
-      }
+  const redirectPath = sessionStorage.getItem('spa-redirect');
+  if (redirectPath) {
+    sessionStorage.removeItem('spa-redirect');
+    window.history.replaceState(null, '', redirectPath);
+  }
 
-      const path = window.location.pathname.replace(/\/$/, '') || '/';
+  let path = window.location.pathname.replace(/\/$/, '') || BASE_PATH;
+  // Quita el base path
+  if (path.startsWith(BASE_PATH)) {
+    path = path.slice(BASE_PATH.length) || '/';
+  }
 
-      if (path === '' || path === '/') {
-        renderHome();
-      } else {
-        // Extrae el segmento de slug: /empresa → empresa
-        const slug = path.split('/').filter(Boolean)[0];
-        if (slug) {
-          renderCompany(slug);
-        } else {
-          renderError('Ruta inválida', 'La URL no corresponde a ninguna empresa.');
-        }
-      }
+  if (path === '/' || path === '') {
+    renderHome();
+  } else {
+    const slug = path.split('/').filter(Boolean)[0];
+    if (slug) {
+      renderCompany(slug);
+    } else {
+      renderError('Ruta inválida', 'La URL no corresponde a ninguna empresa.');
     }
+  }
+}
 
     /**
      * =============================================
@@ -842,7 +846,7 @@
         const card = document.createElement('a');
         card.className = 'company-card';
         // Usamos href real para SEO y accesibilidad; el click navega via JS
-        card.href = `/${company.slug}/`;
+        card.href = `${BASE_PATH}/${company.slug}/`;
         card.setAttribute('aria-label', `Ver changelog de ${company.name}`);
 
         // Miniatura de logo o placeholder con iniciales
@@ -864,11 +868,16 @@
           </svg>`;
 
         // Navegación SPA: evita recarga completa
-        card.addEventListener('click', e => {
-          e.preventDefault();
-          window.history.pushState({}, '', `/${company.slug}/`);
-          renderCompany(company.slug);
-        });
+        document.getElementById('btn-back').addEventListener('click', () => {
+          window.history.pushState({}, '', BASE_PATH + '/');
+        renderHome();
+      });
+
+document.getElementById('logo-link').addEventListener('click', e => {
+  e.preventDefault();
+  window.history.pushState({}, '', BASE_PATH + '/');
+  renderHome();
+});
 
         grid.appendChild(card);
       });
@@ -987,9 +996,9 @@
       const homeLink = document.getElementById('error-home-link');
       homeLink.onclick = e => {
         e.preventDefault();
-        window.history.pushState({}, '', '/');
+        window.history.pushState({}, '', BASE_PATH + '/');
         renderHome();
-      };
+    };
     }
 
     /**
