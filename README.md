@@ -1,6 +1,7 @@
 # ∆ Qastilog
 
-# Este es un proyecto para que los creadores de proyectos app o web puedan tener transparencia colectiva con sus usuarios... ## Actualmente solo contamos con changelog, aunque se vienen nuevas actualizaciones.
+# Este es un proyecto para que los creadores de proyectos app o web puedan tener transparencia colectiva con sus usuarios...
+## Actualmente solo contamos con changelog, aunque se vienen nuevas actualizaciones.
 
 ---
 
@@ -8,7 +9,7 @@
 
 ### Paso 1 — Crea el archivo de datos
 
-Crea `data/nueva-empresa.json` con esta estructura:
+Crea un archivo .json con esta estructura:
 
 ```json
 {
@@ -40,7 +41,7 @@ Crea `data/nueva-empresa.json` con esta estructura:
 
 ## Cómo añadir una entrada de changelog
 
-Abre `data/empresa.json` y agrega un objeto al principio del array `entries`:
+Abre el .json y agrega un objeto al principio del array `entries`:
 
 ```json
 {
@@ -95,5 +96,4 @@ El campo `changes` acepta **Markdown ligero**:
 MIT — úsalo y modifícalo libremente.
 
 -- Notas:
-> Se usa un poco de Claude para mantener el proyecto.
-> Versión alpha
+> Se usa Claude para mantener el proyecto, aunque después se realizan cambios manuales
