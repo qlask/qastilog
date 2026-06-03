@@ -1,0 +1,79 @@
+{
+    "geode":   "3.0.0",
+    "gd": {
+        "win":     "2.206",
+        "android": "2.206",
+        "mac":     "2.206",
+        "ios":     "2.206"
+    },
+
+    "id":          "yourname.direction-indicator",
+    "name":        "Direction Indicator",
+    "version":     "v1.0.0",
+    "developer":   "YourName",
+    "description": "Muestra en pantalla si el jugador va hacia arriba (barra amarilla) o hacia abajo (barra azul), con glow configurable.",
+
+    "settings": {
+
+        "pos-x": {
+            "name":        "Posición X",
+            "description": "Coordenada X del indicador (0 = borde izquierdo). El extremo derecho suele estar cerca de 530-560.",
+            "type":        "float",
+            "default":     535.0,
+            "min":         0.0,
+            "max":         1000.0
+        },
+
+        "pos-y": {
+            "name":        "Posición Y",
+            "description": "Coordenada Y del indicador (0 = borde inferior, 160 ≈ centro de pantalla).",
+            "type":        "float",
+            "default":     160.0,
+            "min":         0.0,
+            "max":         500.0
+        },
+
+        "bar-width": {
+            "name":        "Ancho de la barra",
+            "description": "Ancho de la barra sólida en unidades de juego.",
+            "type":        "float",
+            "default":     18.0,
+            "min":         4.0,
+            "max":         120.0
+        },
+
+        "bar-height": {
+            "name":        "Alto de la barra",
+            "description": "Alto de la barra sólida en unidades de juego.",
+            "type":        "float",
+            "default":     80.0,
+            "min":         8.0,
+            "max":         400.0
+        },
+
+        "use-glow": {
+            "name":        "Efecto glow",
+            "description": "Activa el resplandor alrededor de la barra.",
+            "type":        "bool",
+            "default":     true
+        },
+
+        "glow-size": {
+            "name":        "Tamaño del glow",
+            "description": "Qué tan lejos se extiende el resplandor desde los bordes de la barra.",
+            "type":        "float",
+            "default":     14.0,
+            "min":         2.0,
+            "max":         80.0
+        },
+
+        "glow-opacity": {
+            "name":        "Intensidad del glow",
+            "description": "Alpha máximo del glow (0 = invisible, 255 = máxima intensidad).",
+            "type":        "int",
+            "default":     160,
+            "min":         0,
+            "max":         255
+        }
+    }
+}
